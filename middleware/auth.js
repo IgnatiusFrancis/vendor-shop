@@ -1,12 +1,12 @@
 const expressAsyncHandler = require("express-async-handler");
 
 const obtainToken = require("../utils/obtainToken");
-const { verifyJwtToken } = require("../utils/verifyToken");
+const { verifyToken } = require("../utils/verifyToken");
 
 const isAuthenticated = expressAsyncHandler(async (req, res, next) => {
-  const userDecoded = await verifyJwtToken(obtainToken(req));
-  req.user = userDecoded;
+  const userDecoded = await verifyToken(obtainToken(req));
 
+  req.user = userDecoded;
   if (!userDecoded) {
     return res.status(401).json({
       status: "failed",

@@ -6,8 +6,8 @@ const asyncHandler = require("express-async-handler");
 const { userSchemaValidator } = require("../model/userModel");
 const ErrorHandler = require("../utils/ErrorHandler");
 const sendMail = require("../utils/sendMail");
-const verifytoken = require("../utils/verifyToken");
 const jwt = require("jsonwebtoken");
+const { verifyToken } = require("../utils/verifyToken");
 
 // GET /users
 const getUsers = async (req, res, next) => {
@@ -144,9 +144,8 @@ const createUser = async (req, res, next) => {
 const activateAccount = asyncHandler(async (req, res, next) => {
   try {
     const { activation_token } = req.body;
-    console.log(activation_token);
 
-    const decoded = verifytoken(activation_token);
+    const decoded = await verifyToken(activation_token);
 
     if (!decoded) {
       return next(new ErrorHandler("Invalid Token", 400));
@@ -163,6 +162,7 @@ const activateAccount = asyncHandler(async (req, res, next) => {
     const newUser = User.create({ name, email, password, avatar });
     const token = await user.generateToken();
 
+    console.log(newUser);
     res.status(201).json({
       status: "Success",
       message: "Registeration Successfully",
@@ -191,6 +191,7 @@ const Login = asyncHandler(async (req, res, next) => {
   }
 
   const token = user.generateToken();
+
   res.status(200).json({ data: user, token });
 });
 
