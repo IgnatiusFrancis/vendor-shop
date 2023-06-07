@@ -258,6 +258,21 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
+const logOut = async (req, res, next) => {
+  try {
+    res.cookie("token", null, {
+      expires: new Date(Date.now()),
+      httpOnly: true,
+    });
+
+    res.status(201).json({
+      success: true,
+      message: "Sucessfully Logged Out",
+    });
+  } catch (error) {
+    return next(ErrorHandler(500, error.message));
+  }
+};
 // Create Activation Token
 const crateActivationToken = (user) => {
   return jwt.sign(user, process.env.ACTIVATION_SECRET, {
@@ -273,4 +288,5 @@ module.exports = {
   updateUser,
   deleteUser,
   activateAccount,
+  logOut,
 };
