@@ -162,7 +162,6 @@ const activateAccount = asyncHandler(async (req, res, next) => {
     const newUser = User.create({ name, email, password, avatar });
     const token = await user.generateToken();
 
-    console.log(newUser);
     res.status(201).json({
       status: "Success",
       message: "Registeration Successfully",
@@ -175,7 +174,7 @@ const Login = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!validator.isEmail(email)) {
-    return next(new errorHandler("Invalid Email", 400));
+    return next(new ErrorHandler("Invalid Email", 400));
   }
 
   const user = await User.findOne({ email }).select("+password");
@@ -199,15 +198,13 @@ const Login = asyncHandler(async (req, res, next) => {
 const getUserById = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id);
-    console.log(user);
-    console.log(req.user);
 
     if (!user) {
-      return next(new errorHandler(`User with ID ${user} not found`, 400));
+      return next(new ErrorHandler(`User with ID ${user} not found`, 400));
     }
     res.status(200).json({ user });
   } catch (error) {
-    return next(new errorHandler(error.message, 400));
+    return next(new ErrorHandler(error.message, 400));
   }
 };
 
@@ -260,7 +257,7 @@ const deleteUser = async (req, res, next) => {
 
 const logOut = async (req, res, next) => {
   try {
-    res.cookie("token", null, {
+    res.cookie("Token", null, {
       expires: new Date(Date.now()),
       httpOnly: true,
     });

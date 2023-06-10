@@ -1,6 +1,12 @@
 const obtainToken = (req) => {
   const headersDetails = req.headers;
-  const token = headersDetails["authorization"].split(" ")[1];
+
+  let token;
+  if (headersDetails.cookie) {
+    token = headersDetails.cookie.split("=")[1];
+  } else {
+    token = headersDetails["authorization"].split(" ")[1];
+  }
 
   if (token !== undefined) {
     return token;
