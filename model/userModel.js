@@ -29,6 +29,10 @@ const userSchema = new mongoose.Schema({
   },
   passwordChangedAt: Date,
   avatar: String,
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 userSchema.methods.generateToken = function () {
