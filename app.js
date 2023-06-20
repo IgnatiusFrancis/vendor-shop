@@ -9,6 +9,7 @@ const cors = require("cors");
 const user = require("./routes/userRoute");
 const seller = require("./routes/shopRoute");
 const product = require("./routes/productRoute");
+const event = require("./routes/eventRoute");
 
 dotenv.config();
 const app = express();
@@ -26,6 +27,7 @@ app.use(cookieParser());
 app.use("/api/v1/user", user);
 app.use("/api/v1/seller", seller);
 app.use("/api/v1/product", product);
+app.use("/api/v1/event", event);
 app.use("/uploads", express.static("uploads"));
 
 const port = process.env.PORT || 8000;

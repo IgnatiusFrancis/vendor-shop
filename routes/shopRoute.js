@@ -6,6 +6,7 @@ const {
   activateAccount,
   Login,
   getSellerById,
+  logOut,
 } = require("../controller/shop");
 
 const router = express.Router();
@@ -13,7 +14,7 @@ const router = express.Router();
 router.post("/create-shop", uploads.single("avatar"), createShop);
 router.post("/activation", activateAccount);
 router.post("/login", Login);
-
+router.get("/logout", logOut);
 router.get("/findme", isAuthenticated, getSellerById);
 
 module.exports = router;

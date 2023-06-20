@@ -227,9 +227,26 @@ const crateActivationToken = (user) => {
   });
 };
 
+const logOut = async (req, res, next) => {
+  try {
+    res.cookie("Token", null, {
+      expires: new Date(Date.now()),
+      httpOnly: true,
+    });
+
+    res.status(201).json({
+      success: true,
+      message: "Sucessfully Logged Out",
+    });
+  } catch (error) {
+    return next(ErrorHandler(500, error.message));
+  }
+};
+
 module.exports = {
   createShop,
   activateAccount,
   Login,
   getSellerById,
+  logOut,
 };
