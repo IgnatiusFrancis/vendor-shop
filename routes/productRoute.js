@@ -10,8 +10,13 @@ const {
 
 const router = express.Router();
 
-router.post("/create-product", uploads.array("images"), createProduct);
-router.get("/get-all-products/:id", getAllProducts);
-router.get("/delete-shop-product/:id", deleteProduct);
+router.post(
+  "/create-product",
+  isAuthenticated,
+  uploads.array("images"),
+  createProduct
+);
+router.get("/get-all-products/:id", isAuthenticated, getAllProducts);
+router.delete("/delete-shop-product/:id", isAuthenticated, deleteProduct);
 
 module.exports = router;

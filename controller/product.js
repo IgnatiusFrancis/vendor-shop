@@ -2,6 +2,7 @@ const expressAsyncHandler = require("express-async-handler");
 const Shop = require("../model/shopModel");
 const ErrorHandler = require("../utils/ErrorHandler");
 const Product = require("../model/productModel");
+const fs = require("fs");
 
 const createProduct = expressAsyncHandler(async (req, res, next) => {
   try {
@@ -43,14 +44,31 @@ const deleteProduct = expressAsyncHandler(async (req, res, next) => {
   try {
     const productId = req.params.id;
 
+    const productData = await Product.findById(productId);
+
+    productData.images.forEach((imageUrl) => {
+      const filename = imageUrl;
+      const filePath = `uploads/${filename}`;
+
+      fs.unlink(filePath, (err) => {
+        if (err) {
+          console.log("Error deleting File ", err);
+        } else {
+          console.log("File deleted Successfully");
+        }
+      });
+    });
+
     const product = await Product.findByIdAndDelete(productId);
+
     if (!product) {
       return next(new ErrorHandler("Product not found with this Id", 400));
+    } else {
+      res.status(201).json({
+        success: true,
+        message: "Product Deleted",
+      });
     }
-    res.status(201).json({
-      success: true,
-      message: "Product Deleted",
-    });
   } catch (error) {
     return next(new ErrorHandler(error, 400));
   }

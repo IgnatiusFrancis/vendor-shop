@@ -3,9 +3,9 @@ const obtainToken = (req) => {
 
   let token;
   if (headersDetails.cookie) {
-    token = headersDetails.cookie.split("=")[1];
+    token = headersDetails?.cookie?.split("=")[1];
   } else {
-    token = headersDetails["authorization"].split(" ")[1];
+    token = headersDetails["authorization"]?.split(" ")[1];
   }
 
   if (token !== undefined) {

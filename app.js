@@ -10,6 +10,7 @@ const user = require("./routes/userRoute");
 const seller = require("./routes/shopRoute");
 const product = require("./routes/productRoute");
 const event = require("./routes/eventRoute");
+const couponCode = require("./routes/coupounCodeRoute");
 
 dotenv.config();
 const app = express();
@@ -28,6 +29,7 @@ app.use("/api/v1/user", user);
 app.use("/api/v1/seller", seller);
 app.use("/api/v1/product", product);
 app.use("/api/v1/event", event);
+app.use("/api/v1/couponCode", couponCode);
 app.use("/uploads", express.static("uploads"));
 
 const port = process.env.PORT || 8000;
@@ -37,19 +39,19 @@ process.on("uncaughtException", (err) => {
   console.log("Shutting down the server for handling uncaught exception");
 });
 
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, PATCH, OPTIONS"
-  );
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  next();
-});
+// app.use((req, res, next) => {
+//   res.setHeader("Access-Control-Allow-Origin", "*");
+//   res.setHeader(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
+//   );
+//   res.setHeader(
+//     "Access-Control-Allow-Methods",
+//     "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+//   );
+//   res.setHeader("Access-Control-Allow-Credentials", "true");
+//   next();
+// });
 
 app.all("*", (req, res, next) => {
   next(new ErrorHandler(`Can't find ${req.originalUrl} on this server`, 404));
